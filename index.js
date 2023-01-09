@@ -27,6 +27,7 @@ const run = async () => {
       const shop_db = client.db("e-shop-database");
       const usersCollection = shop_db.collection("users");
       const productsCollection = shop_db.collection("products");
+      const cartsCollection = shop_db.collection("carts");
 
       /* Route a store a new user data */
       app.post("/users", async (req, res) => {
@@ -42,10 +43,24 @@ const run = async () => {
          res.send(users);
       });
 
+      /* delete a user */
+      app.delete("/users", async (req, res) => {
+         const id = req.params.id;
+         const query = { _id: ObjectId(id) };
+         const result = await usersCollection.deleteOne(query);
+         res.send(result);
+      });
+
       /* Store a single product */
       app.post("/products", async (req, res) => {
          const product = req.body;
          const result = await productsCollection.insertOne(product);
+         res.send(result);
+      });
+      /* Store a single product */
+      app.post("/carts", async (req, res) => {
+         const product = req.body;
+         const result = await cartsCollection.insertOne(product);
          res.send(result);
       });
 
