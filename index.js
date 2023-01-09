@@ -17,6 +17,44 @@ const client = new MongoClient(uri, {
    serverApi: ServerApiVersion.v1,
 });
 
+const run = async () => {
+   try {
+      const shop_db = client.db("e-shop-database");
+      const usersCollection = shop_db.collection("users");
+      const productsCollection = shop_db.collection("products");
+
+      /* Route a store a new user data */
+      app.post("/users", async (req, res) => {
+         const user = req.body;
+         const result = await usersCollection.insertOne(user);
+         res.send(result);
+      });
+
+      /* Get all users */
+      app.get("/users", async (req, res) => {
+         const query = {};
+         const users = await usersCollection.find(query).toArray();
+         res.send(users);
+      });
+
+      /* Store a single product */
+      app.post("/products", async (req, res) => {
+         const product = req.body;
+         const result = await productsCollection.insertOne(product);
+         res.send(result);
+      });
+
+      /* Get all products */
+      app.get("/products", async (req, res) => {
+         const query = {};
+         const products = await productsCollection.find(query).toArray();
+         res.send(products);
+      });
+   } finally {
+   }
+};
+run().catch((err) => console.error(err));
+
 app.listen(port, () => {
    console.log(`server is running on port : ${port}`);
 });
