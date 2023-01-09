@@ -64,6 +64,13 @@ const run = async () => {
          res.send(result);
       });
 
+      /* Get all carts */
+      app.get("/carts", async (req, res) => {
+         const query = {};
+         const carts = await productsCollection.find(query).toArray();
+         res.send(carts);
+      });
+
       /* Get all products */
       app.get("/products", async (req, res) => {
          const query = {};
