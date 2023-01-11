@@ -52,14 +52,14 @@ const run = async () => {
       });
 
       /* update a user */
-      app.put("/updateUser/:id", async (req, res) => {
+      app.post("/updateUser/:id", async (req, res) => {
          const id = req.params.id;
          const newData = req.body;
-         const filter = { _id: new ObjectId(id) };
+         const query = { _id: ObjectId(id) };
          const updateDoc = {
-            $set: newData,
+            $set: { ...newData },
          };
-         const result = await usersCollection.updateOne(filter, updateDoc);
+         const result = await usersCollection.updateOne(query, updateDoc);
          res.send(result);
       });
 
