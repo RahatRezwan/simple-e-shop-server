@@ -51,6 +51,18 @@ const run = async () => {
          res.send(result);
       });
 
+      /* update a user */
+      app.put("/updateUser/:id", async (req, res) => {
+         const id = req.params.id;
+         const newData = req.body;
+         const filter = { _id: new ObjectId(id) };
+         const updateDoc = {
+            $set: newData,
+         };
+         const result = await usersCollection.updateOne(filter, updateDoc);
+         res.send(result);
+      });
+
       /* Store a single product */
       app.post("/products", async (req, res) => {
          const product = req.body;
